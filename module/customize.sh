@@ -11,39 +11,40 @@ _core(){
 
 }
 _check_source(){
-	if [[ ! -e "${TMPDIR}/_mod" ]]; then
-		unzip -o "$ZIPFILE" '_mod/*' -d $TMPDIR >/dev/null 2>&1
-		[[ ! -e "${TMPDIR}/_mod" ]] && abort "---  必要资源无法提取"
-	fi
+  if [[ ! -e "${TMPDIR}/_mod" ]]; then
+    unzip -o "$ZIPFILE" '_mod/*' -d $TMPDIR >/dev/null 2>&1
+    [[ ! -e "${TMPDIR}/_mod" ]] && abort "---  必要资源无法提取"
+  fi
 }
 _sign(){
-	source ${TMPDIR}/_mod/_sign.sh
+  source ${TMPDIR}/_mod/_sign.sh
 }
 _checktools(){
-	source ${TMPDIR}/_mod/_check.sh
-	[[ "${_ismiui}x" == "Fx" ]] && abort "---  模块只适用于  MIUI  "
-	[[ "${_isdevice}x" == "Fx" ]] && abort "---  模块只适用于  $cpd_device  "
-	[[ "${_ismatchver}x" == "Fx" ]] && abort "---  模块只适用于系统版本  $cpd_sbv  "
+  source ${TMPDIR}/_mod/_check.sh
+  [[ "${_ismiui}x" == "Fx" ]] && abort "---  模块只适用于  MIUI  "
+  [[ "${_isdevice}x" == "Fx" ]] && abort "---  模块只适用于  $cpd_device  "
+  [[ "${_ismatchver}x" == "Fx" ]] && abort "---  模块只适用于系统版本  $cpd_sbv  "
 }
 _tools(){
-	for _tool in $@
-	do
-		_tool2=${TMPDIR}/_mod/_tools/${_tool}
-		set_perm ${_tool2} 0 0 0777
-		eval ${_tool}=${_tool2}
-		ui_print "---  布置 $_tool  "
-	done
+  for _tool in $@
+  do
+    _tool2="${TMPDIR}/_mod/_tools/${_tool}"
+    [ ! -e ${_tool2} ] && abort "---  ${_tool2}  不存在"
+    set_perm ${_tool2} 0 0 0777
+    eval ${_tool}=${_tool2}
+    ui_print "---  布置 $_tool  "
+  done
 }
 _choose(){
-	source ${TMPDIR}/_mod/_choose.sh
+  source ${TMPDIR}/_mod/_choose.sh
 }
 _thanks(){
-	source ${TMPDIR}/_mod/_thank.sh
+  source ${TMPDIR}/_mod/_thank.sh
 }
 _display(){
-	if [[ -e "${MODPATH}/module.prop" ]]; then
-		$display
-	fi
+  if [[ -e "${MODPATH}/module.prop" ]]; then
+    $display
+  fi
 }
 
 
