@@ -13,26 +13,20 @@ _core(){
 _check_source(){
   if [[ ! -e "${TMPDIR}/_mod" ]]; then
     unzip -o "$ZIPFILE" '_mod/*' -d $TMPDIR >/dev/null 2>&1
-    [[ ! -e "${TMPDIR}/_mod" ]] && abort "---  必要资源无法提取"
+    [[ ! -e "${TMPDIR}/_mod" ]] && abort "- 必要资源无法提取"
   fi
 }
 _sign(){
   source ${TMPDIR}/_mod/_sign.sh
 }
-_checktools(){
-  source ${TMPDIR}/_mod/_check.sh
-  [[ "${_ismiui}x" == "Fx" ]] && abort "---  模块只适用于  MIUI  "
-  [[ "${_isdevice}x" == "Fx" ]] && abort "---  模块只适用于  $cpd_device  "
-  [[ "${_ismatchver}x" == "Fx" ]] && abort "---  模块只适用于系统版本  $cpd_sbv  "
-}
 _tools(){
   for _tool in $@
   do
     _tool2="${TMPDIR}/_mod/_tools/${_tool}"
-    [ ! -e ${_tool2} ] && abort "---  ${_tool2}  不存在"
+    [ ! -e ${_tool2} ] && abort "- ${_tool2} 不存在"
     set_perm ${_tool2} 0 0 0777
     eval ${_tool}=${_tool2}
-    ui_print "---  布置 $_tool  "
+    ui_print "- 布置 $_tool "
   done
 }
 _choose(){
@@ -50,10 +44,9 @@ _display(){
 
 _check_source
 _sign
-#_checktools
 #工具布置
 _tools "display"
-#选择工具 点滑选择"_chooseToS 时间 次数";音量键选择"chooseport 时间"
+#选择工具 点滑选择"_chooseToS 时间 次数";音量键选择"chooseport 时间";音量键选择"choosestd"
 #_choose
 _core
 _thanks
